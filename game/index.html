@@ -7,12 +7,20 @@
 <!-- main stylesheet -->
 <link rel="stylesheet" href="stylesheets/screen.css" />
 
+<!-- main script -->
+<script src="js/cow.js"></script>
+<script>
+	window.addEventListener("load", function() {
+		cow.load("js/dom.js", cow.setup);
+	});
+</script>
+
 </head>
 
 <body>
 
 	<div id="game">
-		
+
 		<div class="screen" id="splash-screen"></div>
 
 		<div class="screen" id="main-menu"></div>
