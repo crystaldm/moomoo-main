@@ -51,11 +51,24 @@ var cow = (function() {
 
   function setup() {
     console.log("in::cow.setup");
+    cow.showScreen("splash-screen");
+  }
+
+  function showScreen(screenId) {
+    var dom = cow.dom,
+      $ = dom.$,
+      activeScreen = $("#game .screen.active")[0],
+      screen = $("#" + screenId) [0];
+    if(activeScreen) {
+      dom.removeClass(activeScreen, "active");
+    }
+    dom.addClass(screen, "active");
   }
 
   return {
     load: load,
-    setup: setup
+    setup: setup,
+    showScreen: showScreen
   }
 
 }) ();

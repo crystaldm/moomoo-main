@@ -1,4 +1,4 @@
-/* line 5, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,66 +20,69 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
 
-/* line 6, ../sass/screen.scss */
+/* line 22, ../sass/screen.scss */
 body {
   margin: 0;
   overflow: hidden;
 }
 
-/* line 11, ../sass/screen.scss */
+/* line 27, ../sass/screen.scss */
 #game {
+  border: 1px solid #000;
   position: absolute;
+  overflow: hidden;
   left: 0;
   top: 0;
-  width: 320px;
-  height: 480px;
+  font-size: 40px;
+  width: 8em;
+  height: 12em;
   background-color: #1e1e1e;
 }
 
-/* line 20, ../sass/screen.scss */
+/* line 41, ../sass/screen.scss */
 .screen {
   position: absolute;
   width: 100%;
@@ -88,7 +91,38 @@ body {
   z-index: 10;
   background-color: red;
 }
-/* line 28, ../sass/screen.scss */
+/* line 49, ../sass/screen.scss */
 .screen.active {
   display: block;
+}
+
+/* line 56, ../sass/screen.scss */
+#splash-screen {
+  background-image: url("../imgs/splash-screen-bg.jpg");
+  text-align: center;
+  padding-top: 1.5em;
+}
+/* line 61, ../sass/screen.scss */
+#splash-screen .continue {
+  color: #ff6500;
+  cursor: pointer;
+  font-size: 0.70em;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* line 69, ../sass/screen.scss */
+.logo-c {
+  background-color: rgba(255, 165, 0, 0.8);
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+}
+
+/* line 75, ../sass/screen.scss */
+.logo {
+  text-shadow: 0px 1px 3px red;
+  font-family: 'Denk One', sans-serif;
+  font-size: 1.5em;
+  line-height: 60px;
+  text-align: center;
+  color: #fff;
 }

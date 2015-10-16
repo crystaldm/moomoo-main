@@ -8,7 +8,7 @@ cow.dom = (function() {
 
   function hasClass(el, clsName) {
     var regex = new RegExp("(^|\\s)" + clsName + "(\\s|$)");
-    return rege.test(el.className);
+    return regex.test(el.className);
   }
 
   function addClass(el, clsName) {
