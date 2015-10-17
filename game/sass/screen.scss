@@ -5,9 +5,11 @@
 
 //////////////////////////////////////
 /////////////////// VARIABLES & MIXINS
-$accent-color: #FFA500;
+$accent-color: #ffa500;
 
 $button-color: adjust-hue($accent-color, -15%);
+
+$red-color: #ff1500;
 
 $body-font: 'Montserrat', sans-serif;
 
@@ -33,8 +35,6 @@ body {
 	font-size: 40px;
 	width: 8em;
 	height: 12em;
-	// width: 320px;
-	// height: 480px;
 	background-color: rgb(30, 30, 30);
 }
 
@@ -44,7 +44,7 @@ body {
 	height: 100%;
 	display: none;
 	z-index: 10;
-	background-color: red;
+	background-color: $red-color;
 
 	&.active {
 		display: block;
@@ -82,3 +82,40 @@ body {
 }
 
 // main menu
+#main-menu {
+	background-color: $accent-color;
+	padding-top: 1em;
+}
+
+ul {
+	&.menu {
+		text-align: center;
+		padding: 0;
+		margin: 0;
+	}
+
+}
+
+.menu {
+	button {
+		@include border-radius(0.3em);
+		@include box-shadow(#000 2px 2px 5px);
+		outline: none;
+		border: 0.1em solid $accent-color;
+		background-color: $button-color;
+		font-family: $body-font;
+		text-transform: uppercase;
+		color: #fff;
+		width: 13em;
+		line-height: 2em;
+
+		&:hover {
+			@include box-shadow(#000 4px 4px 5px);
+			background-color: $red-color;
+		}
+
+		&.active {
+			background-color: $red-color;
+		}
+	}
+}

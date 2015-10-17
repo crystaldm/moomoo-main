@@ -63,13 +63,13 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   display: block;
 }
 
-/* line 22, ../sass/screen.scss */
+/* line 24, ../sass/screen.scss */
 body {
   margin: 0;
   overflow: hidden;
 }
 
-/* line 27, ../sass/screen.scss */
+/* line 29, ../sass/screen.scss */
 #game {
   border: 1px solid #000;
   position: absolute;
@@ -89,7 +89,7 @@ body {
   height: 100%;
   display: none;
   z-index: 10;
-  background-color: red;
+  background-color: #ff1500;
 }
 /* line 49, ../sass/screen.scss */
 .screen.active {
@@ -125,4 +125,46 @@ body {
   line-height: 60px;
   text-align: center;
   color: #fff;
+}
+
+/* line 85, ../sass/screen.scss */
+#main-menu {
+  background-color: #ffa500;
+  padding-top: 1em;
+}
+
+/* line 91, ../sass/screen.scss */
+ul.menu {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 100, ../sass/screen.scss */
+.menu button {
+  -moz-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  border-radius: 0.3em;
+  -moz-box-shadow: #000 2px 2px 5px;
+  -webkit-box-shadow: #000 2px 2px 5px;
+  box-shadow: #000 2px 2px 5px;
+  outline: none;
+  border: 0.1em solid #ffa500;
+  background-color: #ff6500;
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  color: #fff;
+  width: 13em;
+  line-height: 2em;
+}
+/* line 112, ../sass/screen.scss */
+.menu button:hover {
+  -moz-box-shadow: #000 4px 4px 5px;
+  -webkit-box-shadow: #000 4px 4px 5px;
+  box-shadow: #000 4px 4px 5px;
+  background-color: #ff1500;
+}
+/* line 117, ../sass/screen.scss */
+.menu button.active {
+  background-color: #ff1500;
 }

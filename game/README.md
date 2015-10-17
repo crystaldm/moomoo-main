@@ -14,3 +14,4 @@ Week02:
 	* node/express tutorial
 		www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
 	* (10/15) stopped pg.51
+	* (10/16) stopped pg.
