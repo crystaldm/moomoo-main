@@ -3,20 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
+<meta name="apple-mobile-wb-app-capable" content="yes" />
 <title>Moo Moo Mania</title>
 
 <!-- main stylesheet -->
 <link rel="stylesheet" href="stylesheets/screen.css" />
+<!-- <link rel="stylesheet" href="stylesheets/mobile.css" media="screen and (max-device-width: 768px) and (orientation: portrait), screen and (max-device-width: 1024px) and (orientation: landscape)"/> -->
 
 <!-- web fonts -->
 <link href='https://fonts.googleapis.com/css?family=Denk+One' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <!-- main script -->
 <script src="js/cow.js"></script>
 <script>
 	window.addEventListener("load", function() {
-		cow.load("js/dom.js", cow.setup);
+		cow.load("js/dom.js");
+		if (cow.isStandAlone()) {
+			cow.load("js/screen.splash.js");
+			cow.load("js/screen.main-menu.js", cow.setup);
+		} else {
+			<!-- TODO: might be screen.splash-install.js -->
+			cow.load("js/screen.install.js", cow.setup)
+		}
 	});
 </script>
 
@@ -35,6 +45,18 @@
 			</div>
 
 			<span class="continue">Click to continue</span>
+
+		</div>
+
+		<div class="screen" id="install-screen">
+
+			<div class="logo-c">
+
+				<h1 class="logo">MooMoo <br/>Mania</h1>
+
+			</div>
+
+			<span>Click the <i class="fa fa-download"></i> button to install the game to your home screen.</span>
 
 		</div>
 

@@ -1,4 +1,4 @@
-// main stylesheet for moo moo mania
+// main styles
 
 @import "compass/reset";
 @import "compass/css3";
@@ -44,7 +44,7 @@ body {
 	height: 100%;
 	display: none;
 	z-index: 10;
-	background-color: $red-color;
+	background-color: $accent-color;
 
 	&.active {
 		display: block;
@@ -79,6 +79,20 @@ body {
 	line-height: 60px;
 	text-align: center;
 	color: #fff;
+}
+
+// install screen
+#install-screen {
+	padding-top: 0.5em;
+	text-align: center;
+
+	span {
+		color: #fff;
+		font-family: $body-font;
+		font-size: 0.75em;
+		display: inline-block;
+		padding: 0 0.5em;
+	}
 }
 
 // main menu

@@ -9,9 +9,14 @@ Week 01:
 	* html5 game tutorial I
 	* complete chp. 2
 
-Week02:
+Week 02:
 	* stopped pg.33
 	* node/express tutorial
 		www.tutorialspoint.com/nodejs/nodejs_express_framework.htm
 	* (10/15) stopped pg.51
-	* (10/16) stopped pg.
+
+Week 03:
+	* (10/21) stopped pg.67
+	* skipped over media queries
+
+Week 04:

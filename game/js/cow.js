@@ -50,8 +50,11 @@ var cow = (function() {
   }
 
   function setup() {
-    console.log("in::cow.setup");
-    cow.showScreen("splash-screen");
+    if(isStandAlone()) {
+      showScreen("splash-screen");
+    } else {
+      showScreen("install-screen");
+    }
   }
 
   function showScreen(screenId) {
@@ -59,16 +62,27 @@ var cow = (function() {
       $ = dom.$,
       activeScreen = $("#game .screen.active")[0],
       screen = $("#" + screenId) [0];
+    if(!cow.screens[screenId]) {
+      alert("This module is not implemented yet");
+      return;
+    }
     if(activeScreen) {
       dom.removeClass(activeScreen, "active");
     }
     dom.addClass(screen, "active");
+    cow.screens[screenId].run();
+  }
+
+  function isStandAlone() {
+    return (window.navigator.standalone !== false);
   }
 
   return {
-    load: load,
-    setup: setup,
-    showScreen: showScreen
+    load : load,
+    setup : setup,
+    showScreen : showScreen,
+    screens : {},
+    isStandAlone : isStandAlone
   }
 
 }) ();

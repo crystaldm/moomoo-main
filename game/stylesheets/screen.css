@@ -1,4 +1,4 @@
-/* line 5, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,45 +20,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
@@ -89,7 +89,7 @@ body {
   height: 100%;
   display: none;
   z-index: 10;
-  background-color: #ff1500;
+  background-color: #ffa500;
 }
 /* line 49, ../sass/screen.scss */
 .screen.active {
@@ -128,19 +128,33 @@ body {
 }
 
 /* line 85, ../sass/screen.scss */
+#install-screen {
+  padding-top: 0.5em;
+  text-align: center;
+}
+/* line 89, ../sass/screen.scss */
+#install-screen span {
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75em;
+  display: inline-block;
+  padding: 0 0.5em;
+}
+
+/* line 99, ../sass/screen.scss */
 #main-menu {
   background-color: #ffa500;
   padding-top: 1em;
 }
 
-/* line 91, ../sass/screen.scss */
+/* line 105, ../sass/screen.scss */
 ul.menu {
   text-align: center;
   padding: 0;
   margin: 0;
 }
 
-/* line 100, ../sass/screen.scss */
+/* line 114, ../sass/screen.scss */
 .menu button {
   -moz-border-radius: 0.3em;
   -webkit-border-radius: 0.3em;
@@ -157,14 +171,14 @@ ul.menu {
   width: 13em;
   line-height: 2em;
 }
-/* line 112, ../sass/screen.scss */
+/* line 126, ../sass/screen.scss */
 .menu button:hover {
   -moz-box-shadow: #000 4px 4px 5px;
   -webkit-box-shadow: #000 4px 4px 5px;
   box-shadow: #000 4px 4px 5px;
   background-color: #ff1500;
 }
-/* line 117, ../sass/screen.scss */
+/* line 131, ../sass/screen.scss */
 .menu button.active {
   background-color: #ff1500;
 }
