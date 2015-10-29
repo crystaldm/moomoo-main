@@ -20,3 +20,12 @@ Week 03:
 	* skipped over media queries
 
 Week 04:
+	* (10/28) stopped pg.89
+
+Week 05:
+
+
+
+II. TODOS
+-----------------------------------------------
+  * TODO: pgs.78-80

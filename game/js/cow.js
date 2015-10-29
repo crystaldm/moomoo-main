@@ -1,6 +1,14 @@
 // main script for moo moo mania
 
 var cow = (function() {
+  var settings = {
+    //TODO: alter these to make your own
+    rows : 8,
+    cols : 8,
+    baseScore : 100,
+    numCowTypes : 7
+  };
+
   var scriptQueue = [],
       numResourcesLoaded = 0,
       numResources = 0,
@@ -50,6 +58,17 @@ var cow = (function() {
   }
 
   function setup() {
+    cow.dom.bind(document, "touchmove", function(event) {
+      event.preventDefault();
+    });
+
+    if(/Android/.test(navigator.userAgent)) {
+      $("html")[0].style.height = "200%";
+      setTimeout(function() {
+        window.scrollTo(0,1);
+      }, 0);
+    }
+
     if(isStandAlone()) {
       showScreen("splash-screen");
     } else {
@@ -82,7 +101,8 @@ var cow = (function() {
     setup : setup,
     showScreen : showScreen,
     screens : {},
-    isStandAlone : isStandAlone
+    isStandAlone : isStandAlone,
+    settings : settings
   }
 
 }) ();
