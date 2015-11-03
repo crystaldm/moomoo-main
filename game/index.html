@@ -64,11 +64,11 @@ media="screen and (max-device-width:320px)"/>
 		cow.load("js/dom.js");
 		if (cow.isStandAlone()) {
 			cow.load("js/screen.splash.js");
-			cow.load("js/screen.main-menu.js", cow.setup);
+			cow.load("js/screen.main-menu.js");
+			cow.load("js/board.js", cow.setup);
 		} else {
 			cow.load("js/screen.install.js", cow.setup);
 		}
-		cow.load("js/board.js", cow.setup);
 	});
 </script>
 

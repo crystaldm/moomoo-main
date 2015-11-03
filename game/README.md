@@ -21,6 +21,7 @@ Week 03:
 
 Week 04:
 	* (10/28) stopped pg.89
+	* (11/02) stopped pg.100
 
 Week 05:
 
