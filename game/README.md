@@ -24,7 +24,7 @@ Week 04:
 	* (11/02) stopped pg.100
 
 Week 05:
-
+	* (11/04) stopped pg.
 
 
 II. TODOS

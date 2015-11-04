@@ -9,6 +9,7 @@ cow.board = (function() {
       numCowTypes;
 
     function initialize(callback) {
+      console.log("in initialize");
       settings = cow.settings;
       numCowTypes = settings.numCowTypes;
       baseScore = settings.baseScore;
@@ -22,21 +23,36 @@ cow.board = (function() {
     }
 
     function fillBoard() {
-      var x, y;
-          type;
+      console.log("in fillkkkkkBoard");
+      var x, y, type;
+      console.log("just after declaring x, y");
+      console.log("just before cows init to an array");
+
       cows = [];
+      console.log("in fillBoard, outside loop, cols:" + cols);
       for(x = 0; x < cols; x++) {
+        console.log("in x cols, about to assign cows[x]");
         cows[x] = [];
+
         for(y = 0; y < rows; y++) {
+          console.log("in y rows, about to get a randomCow");
+
           cows[x][y] = randomCow();
+
+return;///////////////////////
+//TODO: ENDLESS LOOP 
           while ((type === getCow(x-1, y) &&
                   type === getCow(x-2, y)) ||
                  (type === getCow(x, y-1) &&
                   type === getCow(x, y-2))) {
-          }
+          } //end of while
+          console.log(" i am in the " + x + ", " + y + " loop");
           cows[x][y] = type;
-        }
-      }
+
+        } //end of for loop
+
+      } //end of outer for loop
+
     }
 
     function randomCow() {
@@ -44,9 +60,12 @@ cow.board = (function() {
     }
 
     function getCow(x,y) {
+      console.log("in getCow");
       if(x < 0 || x > cols-1 || y < 0 || y > rows-1) {
+        console.log("in getCow, returning a -1");
         return -1;
       } else {
+        console.log("in getCow, returning an array value");
         return cows[x][y];
       }
     }
@@ -106,7 +125,7 @@ cow.board = (function() {
     return chains;
   }
 
-  function check() {
+  function check(events) {
     var chains = getChains(),
         hadChains = false, score = 0,
         removed = [], moved = [], gaps = [];
@@ -128,6 +147,40 @@ cow.board = (function() {
         cows[x][y + gaps[x]] = getCow(x, y);
       }
     }
+
+    events = events || [];
+
+    if(hadChains) {
+      events.push({
+        type : "remove",
+        data : removed
+      }, {
+        type : "score",
+        data : score
+      }, {
+        type : "move",
+        data : moved
+      });
+      return check(events);
+    } else {
+      return events;
+    }
+  }
+
+  function hasMoves() {
+    for(var x = 0; x < cols; x++) {
+      for(var y = 0; y < rows; y++) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function canCowMove(x,y) {
+    return((x > 0 && canSwap(x, y, x-1, y)) ||
+           (x < cols-1 && canSwap(x, y, x+1, y)) ||
+           (y > 0 && canSwap(x, y, x, y-1)) ||
+           (y < rows-1 && canSwap(x, y, x, y+1)));
   }
 
   function isAdjacent(x1, y1, x2, y2) {
@@ -137,6 +190,7 @@ cow.board = (function() {
   }
 
     function print() {
+      console.log("entering print()");
       var str = "";
       for(var y = 0; y  < rows; y++) {
         for(var x = 0; x < cols; x++) {
