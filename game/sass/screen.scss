@@ -59,10 +59,30 @@ body {
 	padding-top: 1.5em;
 
 	.continue {
+		display: none;
 		color: adjust-hue($accent-color, -15%);
 		cursor: pointer;
 		font-size: 0.70em;
 		font-family: $body-font;
+	}
+
+}
+
+//progress bar
+.progress {
+	margin: 0 auto;
+	margin-top: 1em;
+	margin-bottom: 0.3em;
+	width: 6em;
+	height: 0.5em;
+	@include border-radius(0.5em);
+	overflow: hidden;
+	border: 1px solid adjust-hue($accent-color, -15%);
+
+	.indicator {
+		background-color: $accent-color;
+		height: 100%;
+		width: 0%;
 	}
 }
 
@@ -92,6 +112,54 @@ body {
 		font-size: 0.75em;
 		display: inline-block;
 		padding: 0 0.5em;
+	}
+}
+
+// game screen
+#game-screen {
+	.game-board {
+		position: relative;
+		width: 8em;
+		height: 8em;
+	}
+
+	.game-board .board-bg, .game-board .board {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.game-board .board {
+		z-index: 10;
+	}
+
+	.game-board .board-bg {
+		z-index: 0;
+	}
+}
+
+.screen {
+	footer {
+		display: block;
+		position: absolute;
+		bottom: 0;
+		height: 1em;
+		width: 100%;
+
+		button {
+			cursor: pointer;
+			margin-left: 0.25em;
+			margin-right: 0.25em;
+			padding: 0 0.75em;
+			font-family: Geo, sans-serif;
+			color: rgba(200, 200, 100, 0.5);
+			background: rgb(10, 20, 0);
+			border: 1px solid rgba(200, 200, 100, 0.5);
+			@include border-radius(0.2em);
+			outline: none;
+		}
 	}
 }
 

@@ -2,7 +2,6 @@
 
 var cow = (function() {
   var settings = {
-    //TODO: alter these to make your own
     rows : 8,
     cols : 8,
     baseScore : 100,
@@ -15,6 +14,7 @@ var cow = (function() {
       executeRunning = false;
 
   function executeScriptQueue() {
+    console.log("in :: cow.executeScriptQueue()");
     var next = scriptQueue[0],
         first, script;
     if(next && next.loaded) {
@@ -58,6 +58,7 @@ var cow = (function() {
   }
 
   function setup() {
+    console.log("in :: cow.setup()");
     cow.dom.bind(document, "touchmove", function(event) {
       event.preventDefault();
     });
@@ -96,13 +97,18 @@ var cow = (function() {
     return (window.navigator.standalone !== false);
   }
 
+  function getLoadProgress() {
+    return numResourcesLoaded / numResources;
+  }
+
   return {
     load : load,
     setup : setup,
     showScreen : showScreen,
     screens : {},
     isStandAlone : isStandAlone,
-    settings : settings
+    settings : settings,
+    getLoadProgress : getLoadProgress
   }
 
 }) ();

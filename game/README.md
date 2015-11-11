@@ -24,7 +24,8 @@ Week 04:
 	* (11/02) stopped pg.100
 
 Week 05:
-	* (11/04) stopped pg.
+	* REDO: chp. 4
+	* (11/10) stopped pg. 190 [Listing 7-18]
 
 
 II. TODOS

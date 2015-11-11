@@ -1,4 +1,4 @@
-/* line 5, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,45 +20,45 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+/* line 116, ../../../../../../Library/Ruby/Gems/2.0.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
@@ -104,20 +104,41 @@ body {
 }
 /* line 61, ../sass/screen.scss */
 #splash-screen .continue {
+  display: none;
   color: #ff6500;
   cursor: pointer;
   font-size: 0.70em;
   font-family: "Montserrat", sans-serif;
 }
 
-/* line 69, ../sass/screen.scss */
+/* line 72, ../sass/screen.scss */
+.progress {
+  margin: 0 auto;
+  margin-top: 1em;
+  margin-bottom: 0.3em;
+  width: 6em;
+  height: 0.5em;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  overflow: hidden;
+  border: 1px solid #ff6500;
+}
+/* line 82, ../sass/screen.scss */
+.progress .indicator {
+  background-color: #ffa500;
+  height: 100%;
+  width: 0%;
+}
+
+/* line 89, ../sass/screen.scss */
 .logo-c {
   background-color: rgba(255, 165, 0, 0.8);
   padding-top: 0.8em;
   padding-bottom: 0.8em;
 }
 
-/* line 75, ../sass/screen.scss */
+/* line 95, ../sass/screen.scss */
 .logo {
   text-shadow: 0px 1px 3px red;
   font-family: 'Denk One', sans-serif;
@@ -127,12 +148,12 @@ body {
   color: #fff;
 }
 
-/* line 85, ../sass/screen.scss */
+/* line 105, ../sass/screen.scss */
 #install-screen {
   padding-top: 0.5em;
   text-align: center;
 }
-/* line 89, ../sass/screen.scss */
+/* line 109, ../sass/screen.scss */
 #install-screen span {
   color: #fff;
   font-family: "Montserrat", sans-serif;
@@ -141,20 +162,67 @@ body {
   padding: 0 0.5em;
 }
 
-/* line 99, ../sass/screen.scss */
+/* line 120, ../sass/screen.scss */
+#game-screen .game-board {
+  position: relative;
+  width: 8em;
+  height: 8em;
+}
+/* line 126, ../sass/screen.scss */
+#game-screen .game-board .board-bg, #game-screen .game-board .board {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+/* line 134, ../sass/screen.scss */
+#game-screen .game-board .board {
+  z-index: 10;
+}
+/* line 138, ../sass/screen.scss */
+#game-screen .game-board .board-bg {
+  z-index: 0;
+}
+
+/* line 144, ../sass/screen.scss */
+.screen footer {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  height: 1em;
+  width: 100%;
+}
+/* line 151, ../sass/screen.scss */
+.screen footer button {
+  cursor: pointer;
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+  padding: 0 0.75em;
+  font-family: Geo, sans-serif;
+  color: rgba(200, 200, 100, 0.5);
+  background: #0a1400;
+  border: 1px solid rgba(200, 200, 100, 0.5);
+  -moz-border-radius: 0.2em;
+  -webkit-border-radius: 0.2em;
+  border-radius: 0.2em;
+  outline: none;
+}
+
+/* line 167, ../sass/screen.scss */
 #main-menu {
   background-color: #ffa500;
   padding-top: 1em;
 }
 
-/* line 105, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 ul.menu {
   text-align: center;
   padding: 0;
   margin: 0;
 }
 
-/* line 114, ../sass/screen.scss */
+/* line 182, ../sass/screen.scss */
 .menu button {
   -moz-border-radius: 0.3em;
   -webkit-border-radius: 0.3em;
@@ -171,14 +239,14 @@ ul.menu {
   width: 13em;
   line-height: 2em;
 }
-/* line 126, ../sass/screen.scss */
+/* line 194, ../sass/screen.scss */
 .menu button:hover {
   -moz-box-shadow: #000 4px 4px 5px;
   -webkit-box-shadow: #000 4px 4px 5px;
   box-shadow: #000 4px 4px 5px;
   background-color: #ff1500;
 }
-/* line 131, ../sass/screen.scss */
+/* line 199, ../sass/screen.scss */
 .menu button.active {
   background-color: #ff1500;
 }
