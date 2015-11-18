@@ -59,15 +59,19 @@ cow.display = (function() {
   }
 
   function drawCow(type, x, y) {
+    console.log("in :: drawCow()");
     ctx.drawImage(cowSprite, type * cowSize, 0, cowSize, cowSize, x * cowSize, y * cowSize, cowSize, cowSize);
   }
 
   function redraw(newCows, callback) {
+    console.log("in :: redrawCow()");
     var x, y;
     cows = newCows;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(x = 0; y < rows; y++) {
-      drawCow(cows[x][y], x, y);
+    for(x = 0; x < cols; x++) {
+      for(y = 0; y < rows; y++) {
+        drawCow(cows[x][y], x, y);
+      }
     }
     callback();
   }
