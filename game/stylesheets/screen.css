@@ -220,10 +220,10 @@ body {
   margin-left: 0.25em;
   margin-right: 0.25em;
   padding: 0 0.75em;
-  font-family: Geo, sans-serif;
-  color: rgba(200, 200, 100, 0.5);
-  background: #0a1400;
-  border: 1px solid rgba(200, 200, 100, 0.5);
+  font-family: "Montserrat", sans-serif;
+  color: #fff;
+  background: #ff6500;
+  border: thin solid #fff;
   -moz-border-radius: 0.2em;
   -webkit-border-radius: 0.2em;
   border-radius: 0.2em;

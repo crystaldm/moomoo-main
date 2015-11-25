@@ -29,3 +29,6 @@ Week 05:
 
 Week 06:
   * (11/18) stopped pg.197 [beginning of chp.8]
+
+Week 08:
+	* (11/25) stopped pg.248

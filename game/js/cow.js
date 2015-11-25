@@ -5,7 +5,26 @@ var cow = (function() {
     rows : 8,
     cols : 8,
     baseScore : 100,
-    numCowTypes : 7
+    numCowTypes : 7,
+
+    controls: {
+      // keyboard
+      KEY_UP : "moveUp",
+      KEY_LEFT : "moveLeft",
+      KEY_DOWN : "moveDown",
+      KEY_RIGHT : "moveRight",
+      KEY_ENTER : "selectCow",
+      KEY_SPACE : "selectCow",
+      // mouse and touch
+      CLICK : "selectCow",
+      TOUCH : "selectCow",
+      // gamepad
+      BUTTON_A : "selectCow",
+      LEFT_STICK_UP : "moveUp",
+      LEFT_STICK_DOWN : "moveDown",
+      LEFT_STICK_LEFT : "moveLeft",
+      LEFT_STICK_RIGHT : "moveRight"
+    }
   };
 
   var scriptQueue = [],

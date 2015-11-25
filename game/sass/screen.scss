@@ -174,10 +174,10 @@ body {
 			margin-left: 0.25em;
 			margin-right: 0.25em;
 			padding: 0 0.75em;
-			font-family: Geo, sans-serif;
-			color: rgba(200, 200, 100, 0.5);
-			background: rgb(10, 20, 0);
-			border: 1px solid rgba(200, 200, 100, 0.5);
+			font-family: $body-font;
+			color: #fff;
+			background: $button-color;
+			border: thin solid #fff;
 			@include border-radius(0.2em);
 			outline: none;
 		}
