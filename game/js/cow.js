@@ -24,7 +24,7 @@ var cow = (function() {
       LEFT_STICK_DOWN : "moveDown",
       LEFT_STICK_LEFT : "moveLeft",
       LEFT_STICK_RIGHT : "moveRight"
-    }
+    },
   };
 
   var scriptQueue = [],

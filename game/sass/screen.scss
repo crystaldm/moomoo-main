@@ -117,10 +117,41 @@ body {
 
 // game screen
 #game-screen {
+	.game-info {
+		width: 100%;
+		float: left;
+		font-family: $body-font;
+	}
+
+	.game-info label {
+		display: inline-block;
+		height: 1.5em;
+		float: left;
+		font-size: 0.6em;
+		padding: 0.25em;
+	}
+
+	.game-info .score {
+		float: right;
+	}
+
+	.time {
+		@include border-radius(0.5em);
+		height: 0.25em;
+	}
+
+	.time .indicator {
+		width: 100%;
+	}
+
 	.game-board {
 		position: relative;
 		width: 8em;
 		height: 8em;
+		perspective: 16em;
+		-webkit-perspective: 16em;
+		-moz-perspective: 16em;
+		-ms-perspective: 16em;
 	}
 
 	.game-board .board-bg, .game-board .board {

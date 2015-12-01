@@ -23,7 +23,6 @@ cow.board = (function() {
     }
 
     function fillBoard() {
-      console.log("in :: fillBoard()");
         var x, y,
             type;
         cows = [];
@@ -58,7 +57,6 @@ cow.board = (function() {
     }
 
     function checkChain(x, y) {
-      console.log("in :: checkChain()");
       var type = getCow(x, y),
           left = 0, right = 0,
           down = 0, up = 0;
@@ -194,22 +192,39 @@ cow.board = (function() {
   }
 
   function swap(x1, y1, x2, y2, callback) {
-      var tmp,
-          events;
-
-      if (canSwap(x1, y1, x2, y2)) {
-
-          // swap the cows
-          tmp = getCow(x1, y1);
-          cows[x1][y1] = getCow(x2, y2);
-          cows[x2][y2] = tmp;
-
-          // check the board and get list of events
-          events = check();
-
+      var tmp, swap1, swap2,
+          events = [];
+      swap1 = {
+          type : "move",
+          data : [{
+              type : getCow(x1, y1),
+              fromX : x1, fromY : y1, toX : x2, toY : y2
+          },{
+              type : getCow(x2, y2),
+              fromX : x2, fromY : y2, toX : x1, toY : y1
+          }]
+      };
+      swap2 = {
+          type : "move",
+          data : [{
+              type : getCow(x2, y2),
+              fromX : x1, fromY : y1, toX : x2, toY : y2
+          },{
+              type : getCow(x1, y1),
+              fromX : x2, fromY : y2, toX : x1, toY : y1
+          }]
+      };
+      if (isAdjacent(x1, y1, x2, y2)) {
+          events.push(swap1);
+          if (canSwap(x1, y1, x2, y2)) {
+              tmp = getCow(x1, y1);
+              cows[x1][y1] = getCow(x2, y2);
+              cows[x2][y2] = tmp;
+              events = events.concat(check());
+          } else {
+              events.push(swap2, {type : "badswap"});
+          }
           callback(events);
-      } else {
-          callback(false);
       }
   }
 

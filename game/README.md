@@ -7,7 +7,7 @@ I. Timeline
 Week 01:
 	* create boilerplate
 	* html5 game tutorial I
-	* complete chp. 2
+	* complete chp.2
 
 Week 02:
 	* stopped pg.33
@@ -31,4 +31,5 @@ Week 06:
   * (11/18) stopped pg.197 [beginning of chp.8]
 
 Week 08:
-	* (11/25) stopped pg.248
+	* (11/25) stopped pg.218
+	* (11/30) stopped pg.258
