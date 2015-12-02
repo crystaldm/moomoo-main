@@ -33,3 +33,4 @@ Week 06:
 Week 08:
 	* (11/25) stopped pg.218
 	* (11/30) stopped pg.258
+	* (12/01) stopped pg.267

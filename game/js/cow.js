@@ -5,6 +5,9 @@ var cow = (function() {
     rows : 8,
     cols : 8,
     baseScore : 100,
+    baseLevelTimer: 60000,
+    baseLevelScore: 1500,
+    baseLevelExp: 1.05,
     numCowTypes : 7,
 
     controls: {

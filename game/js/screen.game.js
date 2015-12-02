@@ -1,10 +1,74 @@
 // game screen module
 
 cow.screens["game-screen"] = (function() {
-  var gameState;
   var firstRun = true,
       paused,
-      cursor;
+      pauseStart,
+      cursor,
+      gameState = {
+          // game state variables
+      };
+
+  function setLevelTimer(reset) {
+      var $ = cow.dom.$;
+      if (gameState.timer) {
+          clearTimeout(gameState.timer);
+          gameState.timer = 0;
+      }
+      if (reset) {
+          gameState.startTime = Date.now();
+          gameState.endTime =
+              cow.settings.baseLevelTimer *
+              Math.pow(gameState.level,
+                       -0.05 * gameState.level);
+      }
+      var delta = gameState.startTime +
+                  gameState.endTime - Date.now(),
+          percent = (delta / gameState.endTime) * 100,
+          progress = $("#game-screen .time .indicator")[0];
+      if (delta < 0) {
+          gameOver();
+      } else {
+          progress.style.width = percent + "%";
+          gameState.timer = setTimeout(setLevelTimer, 30);
+      }
+  }
+
+  function startGame() {
+      var board = cow.board,
+          display = cow.display;
+      gameState = {
+          level : 0,
+          score : 0,
+          timer : 0, // setTimeout reference
+          startTime : 0, // time at start of level
+          endTime : 0 // time to game over
+      };
+      updateGameInfo();
+      board.initialize(function() {
+          display.initialize(function() {
+              cursor = {
+                  x : 0,
+                  y : 0,
+                  selected : false
+              };
+              display.redraw(board.getBoard(), function() {
+                  advanceLevel();
+              });
+          });
+      });
+      paused = false;
+      var overlay = cow.dom.$("#game-screen .pause-overlay")[0];
+      overlay.style.display = "none";
+  }
+
+  function updateGameInfo() {
+      var $ = cow.dom.$;
+      $("#game-screen .score span")[0].innerHTML =
+          gameState.score;
+      $("#game-screen .level span")[0].innerHTML =
+          gameState.level;
+  }
 
   function exitGame() {
     console.log("in :: exitGame()");
@@ -17,59 +81,30 @@ cow.screens["game-screen"] = (function() {
     }
   }
 
-  function startGame() {
-    console.log("Game ON");
-    var board = cow.board,
-        display = cow.display;
-    gameState = {
-      level : 0,
-      score : 0,
-      timer : 0,
-      startTime : 0,
-      endTime : 0
-    };
-    updateGameInfo();
-    board.initialize(function() {
-      display.initialize(function() {
-        cursor = {
-          x : 0,
-          y : 0,
-          selection : false
-        }
-        display.redraw(board.getBoard(), function() {
-        });
-      });
-    });
-
-    paused = false;
-    var dom = cow.dom,
-      overlay = dom.$("#game-screen .pause-overlay")[0];
-    overlay.style.display = "none";
-  }
-
-  function updateGameInfo() {
-    var $ = cow.dom.$;
-    $("#game-screen .score span")[0].innerHTML = gameState.score;
-    $("game-screen .level span")[0].innerHTML = gameState.level;
-  }
-
   function pauseGame() {
     console.log("Game PAUSED");
-    if(paused) {
-      return;
-    }
-    paused = true;
-    var dom = cow.dom,
-      overlay = dom.$("#game-screen .pause-overlay")[0];
-    overlay.style.display = "block";
+      if (paused) {
+          return; // do nothing if already paused
+      }
+      var dom = cow.dom,
+          overlay = dom.$("#game-screen .pause-overlay")[0];
+      overlay.style.display = "block";
+      paused = true;
+      pauseStart = Date.now();
+      clearTimeout(gameState.timer);
+      cow.display.pause();
   }
 
   function resumeGame() {
     console.log("Game ON");
-    paused = false;
-    var dom = cow.dom,
-      overlay = dom.$("#game-screen .pause-overlay")[0];
-    overlay.style.display = "none";
+      var dom = cow.dom,
+          overlay = dom.$("#game-screen .pause-overlay")[0];
+      overlay.style.display = "none";
+      paused = false;
+      var pauseTime = Date.now() - pauseStart;
+      gameState.startTime += pauseTime;
+      setLevelTimer();
+      cow.display.resume(pauseTime);
   }
 
   function setCursor(x, y, select) {
@@ -80,6 +115,9 @@ cow.screens["game-screen"] = (function() {
   }
 
   function selectCow(x, y) {
+    if (paused) {
+        return;
+    }
     if(arguments.length === 0) {
       selectCow(cursor.x, cursor.y);
       return;
@@ -102,34 +140,66 @@ cow.screens["game-screen"] = (function() {
   }
 
   function playBoardEvents(events) {
-    var display = cow.display;
-    if(events.length > 0) {
-      var boardEvent = events.shift(),
-          next = function() {
-            playBoardEvents(events);
-          };
-      switch (boardEvent.type) {
-        case "move":
-          display.moveCows(boardEvent.data, next);
-          break;
-        case "remove":
-          display.removeCows(boardEvent.data, next);
-          break;
-        case "refill":
-          display.refill(boardEvent.data, next);
-          break;
-        default:
-          next();
-          break;
+      var display = cow.display;
+      if (events.length > 0) {
+          var boardEvent = events.shift(),
+              next = function() {
+                  playBoardEvents(events);
+              };
+          switch (boardEvent.type) {
+              case "move" :
+                  display.moveCows(boardEvent.data, next);
+                  break;
+              case "remove" :
+                  display.moveCows(boardEvent.data, next);
+                  break;
+              case "refill" :
+                  announce("No moves!");
+                  display.refill(boardEvent.data, next);
+                  break;
+              case "score" : // new score event
+                  addScore(boardEvent.data);
+                  next();
+                  break;
+              default :
+                  next();
+                  break;
+          }
+      } else {
+          display.redraw(cow.board.getBoard(), function() {
+              // good to go again
+          });
       }
-    } else {
-      display.redraw(cow.board.getBoard(), function() {
-        //good to go again
-      });
-    }
+  }
+
+  function addScore(points) {
+      var settings = cow.settings,
+          nextLevelAt = Math.pow(
+              settings.baseLevelScore,
+              Math.pow(settings.baseLevelExp, gameState.level-1)
+          );
+      gameState.score += points;
+      if (gameState.score >= nextLevelAt) {
+          advanceLevel();
+      }
+      updateGameInfo();
+  }
+
+  function advanceLevel() {
+      gameState.level++;
+      announce("Level " + gameState.level);
+      updateGameInfo();
+      gameState.startTime = Date.now();
+      gameState.endTime = cow.settings.baseLevelTimer *
+          Math.pow(gameState.level, -0.05 * gameState.level);
+      setLevelTimer(true);
+      cow.display.levelUp();
   }
 
   function moveCursor(x, y) {
+    if (paused) {
+        return;
+    }
     var settings = cow.settings;
     if(cursor.selected) {
       x += cursor.x;

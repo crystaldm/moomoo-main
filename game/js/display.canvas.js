@@ -2,7 +2,7 @@
 
 cow.display = (function() {
   var animations = [];
-  var canvas, ctx, cols, rows, cows, cowSize, cowSprite, cursor, previousCycle,
+  var canvas, ctx, cols, rows, cows, cowSize, cowSprite, cursor, previousCycle, paused,
   firstRun = true;
 
   function createBackground() {
@@ -50,16 +50,19 @@ cow.display = (function() {
   }
 
   function cycle() {
-    var time = Date.now();
-    if(animations.length === 0) {
-      renderCursor(time);
-    }
-    renderAnimations(time, previousCycle);
-    previousCycle = time;
-    requestAnimationFrame(cycle);
+      var now = Date.now();
+      if (!paused) {
+          if (animations.length === 0) {
+              renderCursor(now);
+          }
+          renderAnimations(now, previousCycle);
+      }
+      previousCycle = now;
+      requestAnimationFrame(cycle);
   }
 
   function initialize(callback) {
+    paused = false;
     if(firstRun) {
       setup();
       cowSprite = new Image();
@@ -253,6 +256,33 @@ cow.display = (function() {
       });
   }
 
+  function levelUp(callback) {
+      addAnimation(1000, {
+          before : function(pos) {
+              var j = Math.floor(pos * rows * 2),
+                  x, y;
+              for (y=0,x=j;y<rows;y++,x--) {
+                  if (x >= 0 && x < cols) { // boundary check
+                      clearCow(x, y);
+                      drawCow(cows[x][y], x, y);
+                  }
+              }
+          },
+          render : function(pos) {
+              var j = Math.floor(pos * rows * 2),
+                  x, y;
+              ctx.save(); // remember to save state
+              ctx.globalCompositeOperation = "lighter";
+              for (y=0,x=j;y<rows;y++,x--) {
+                  if (x >= 0 && x < cols) { // boundary check
+                      drawCow(cows[x][y], x, y, 1.1);
+                  }
+              }
+              ctx.restore();
+          },
+          done : callback
+      });
+  }
 
   function clearCursor() {
     if(cursor) {
@@ -283,6 +313,16 @@ cow.display = (function() {
     );
   }
 
+  function pause() {
+      paused = true;
+  }
+
+  function resume(pauseTime) {
+      paused = false;
+      for (var i=0;i<animations.length;i++) {
+          animations[i].startTime += pauseTime;
+      }
+  }
 
   return {
       initialize : initialize,
@@ -290,7 +330,9 @@ cow.display = (function() {
       setCursor : setCursor,
       moveCows : moveCows,
       removeCows : removeCows,
-      refill : refill
+      refill : refill,
+      pause : pause,
+      resume : resume
   };
 
 }) ();
