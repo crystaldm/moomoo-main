@@ -257,6 +257,7 @@ cow.display = (function() {
   }
 
   function levelUp(callback) {
+      console.log("in :: levelUp()");
       addAnimation(1000, {
           before : function(pos) {
               var j = Math.floor(pos * rows * 2),
@@ -282,6 +283,78 @@ cow.display = (function() {
           },
           done : callback
       });
+  }
+
+  function gameOver(callback) {
+      addAnimation(1000, {
+          render : function(pos) {
+              canvas.style.left =
+                  0.2 * pos * (Math.random() - 0.5) + "em";
+              canvas.style.top =
+                  0.2 * pos * (Math.random() - 0.5) + "em";
+          },
+          done : function() {
+              canvas.style.left = "0";
+              canvas.style.top = "0";
+              explode(callback);
+          }
+      });
+  }
+
+  function explode(callback) {
+    var pieces = [],
+        piece,
+        x, y;
+    for(x = 0; x < cols; x++) {
+      for(y = 0; y < rows; y++) {
+        piece = {
+          type : cows[x][y],
+          pos : {
+            x : x + 0.5,
+            y : y + 0.5
+          },
+          rot : (Math.random() - 0.5) * 3
+        }
+        pieces.push(piece);
+      }
+    }
+    addAnimation(2000, {
+      before : function(pos) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      },
+      render : function(pos) {
+        explodePieces(pieces, pos, delta);
+      },
+      done : callback
+    });
+  }
+
+  function explodePieces(pieces, pos, delta) {
+      var piece, i;
+      for (i=0;i<pieces.length;i++) {
+          piece = pieces[i];
+
+          piece.vel.y += 50 * delta;
+          piece.pos.y += piece.vel.y * delta;
+          piece.pos.x += piece.vel.x * delta;
+
+          if (piece.pos.x < 0 || piece.pos.x > cols) {
+              piece.pos.x = Math.max(0, piece.pos.x);
+              piece.pos.x = Math.min(cols, piece.pos.x);
+              piece.vel.x *= -1;
+          }
+
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.translate(piece.pos.x * cowSizeSize, piece.pos.y * cowSizeSize);
+          ctx.rotate(piece.rot * pos * Math.PI * 4);
+          ctx.translate(-piece.pos.x * cowSizeSize, -piece.pos.y * cowSizeSize);
+          drawCow(piece.type,
+              piece.pos.x - 0.5,
+              piece.pos.y - 0.5
+          );
+          ctx.restore();
+      }
   }
 
   function clearCursor() {
@@ -325,14 +398,16 @@ cow.display = (function() {
   }
 
   return {
-      initialize : initialize,
-      redraw : redraw,
-      setCursor : setCursor,
-      moveCows : moveCows,
-      removeCows : removeCows,
-      refill : refill,
-      pause : pause,
-      resume : resume
+    initialize : initialize,
+    redraw : redraw,
+    setCursor : setCursor,
+    moveCows : moveCows,
+    removeCows : removeCows,
+    refill : refill,
+    levelUp : levelUp,
+    gameOver : gameOver,
+    pause : pause,
+    resume : resume
   };
 
 }) ();

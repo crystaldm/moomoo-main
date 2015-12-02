@@ -27,7 +27,7 @@ cow.screens["game-screen"] = (function() {
           percent = (delta / gameState.endTime) * 100,
           progress = $("#game-screen .time .indicator")[0];
       if (delta < 0) {
-          gameOver();
+          cow.display.gameOver();
       } else {
           progress.style.width = percent + "%";
           gameState.timer = setTimeout(setLevelTimer, 30);
@@ -194,6 +194,17 @@ cow.screens["game-screen"] = (function() {
           Math.pow(gameState.level, -0.05 * gameState.level);
       setLevelTimer(true);
       cow.display.levelUp();
+  }
+
+  function announce(str) {
+      var dom = cow.dom,
+          $ = dom.$,
+          element = $("#game-screen .announcement")[0];
+      element.innerHTML = str;
+      dom.removeClass(element, "zoomfade");
+      setTimeout(function() {
+          dom.addClass(element, "zoomfade");
+      }, 1);
   }
 
   function moveCursor(x, y) {

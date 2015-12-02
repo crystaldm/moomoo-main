@@ -34,3 +34,6 @@ Week 08:
 	* (11/25) stopped pg.218
 	* (11/30) stopped pg.258
 	* (12/01) stopped pg.267
+
+Week 09:
+	* (12/02) stopped pg.828 [chp.10]
