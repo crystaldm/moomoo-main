@@ -9,31 +9,6 @@ cow.screens["game-screen"] = (function() {
           // game state variables
       };
 
-  function setLevelTimer(reset) {
-      var $ = cow.dom.$;
-      if (gameState.timer) {
-          clearTimeout(gameState.timer);
-          gameState.timer = 0;
-      }
-      if (reset) {
-          gameState.startTime = Date.now();
-          gameState.endTime =
-              cow.settings.baseLevelTimer *
-              Math.pow(gameState.level,
-                       -0.05 * gameState.level);
-      }
-      var delta = gameState.startTime +
-                  gameState.endTime - Date.now(),
-          percent = (delta / gameState.endTime) * 100,
-          progress = $("#game-screen .time .indicator")[0];
-      if (delta < 0) {
-          cow.display.gameOver();
-      } else {
-          progress.style.width = percent + "%";
-          gameState.timer = setTimeout(setLevelTimer, 30);
-      }
-  }
-
   function startGame() {
       var board = cow.board,
           display = cow.display;
@@ -70,41 +45,29 @@ cow.screens["game-screen"] = (function() {
           gameState.level;
   }
 
-  function exitGame() {
-    console.log("in :: exitGame()");
-    pauseGame();
-    var confirmed = window.confirm("Do you really wanna exit? Are you sure?");
-    if(confirmed) {
-      cow.showScreen("main-menu");
-    } else {
-      resumeGame();
-    }
-  }
-
-  function pauseGame() {
-    console.log("Game PAUSED");
-      if (paused) {
-          return; // do nothing if already paused
+  function setLevelTimer(reset) {
+      var $ = cow.dom.$;
+      if (gameState.timer) {
+          clearTimeout(gameState.timer);
+          gameState.timer = 0;
       }
-      var dom = cow.dom,
-          overlay = dom.$("#game-screen .pause-overlay")[0];
-      overlay.style.display = "block";
-      paused = true;
-      pauseStart = Date.now();
-      clearTimeout(gameState.timer);
-      cow.display.pause();
-  }
-
-  function resumeGame() {
-    console.log("Game ON");
-      var dom = cow.dom,
-          overlay = dom.$("#game-screen .pause-overlay")[0];
-      overlay.style.display = "none";
-      paused = false;
-      var pauseTime = Date.now() - pauseStart;
-      gameState.startTime += pauseTime;
-      setLevelTimer();
-      cow.display.resume(pauseTime);
+      if (reset) {
+          gameState.startTime = Date.now();
+          gameState.endTime =
+              cow.settings.baseLevelTimer *
+              Math.pow(gameState.level,
+                       -0.05 * gameState.level);
+      }
+      var delta = gameState.startTime +
+                  gameState.endTime - Date.now(),
+          percent = (delta / gameState.endTime) * 100,
+          progress = $("#game-screen .time .indicator")[0];
+      if (delta < 0) {
+          gameOver();
+      } else {
+          progress.style.width = percent + "%";
+          gameState.timer = setTimeout(setLevelTimer, 30);
+      }
   }
 
   function setCursor(x, y, select) {
@@ -115,31 +78,37 @@ cow.screens["game-screen"] = (function() {
   }
 
   function selectCow(x, y) {
-    if (paused) {
-        return;
-    }
-    if(arguments.length === 0) {
-      selectCow(cursor.x, cursor.y);
-      return;
-    }
-    if(cursor.selected) {
-      var dx = Math.abs(x - cursor.x),
-          dy = Math.abs(y - cursor.y),
-          dist = dx + dy;
-      if(dist === 0) {
-        setCursor(x, y, false);
-      } else if(dist == 1) {
-          cow.board.swap(cursor.x, cursor.y, x, y, playBoardEvents);
-          setCursor(x, y, false);
+      if (paused) {
+          return;
+      }
+      if (arguments.length === 0) {
+          selectCow(cursor.x, cursor.y);
+          return;
+      }
+      if (cursor.selected) {
+          var dx = Math.abs(x - cursor.x),
+              dy = Math.abs(y - cursor.y),
+              dist = dx + dy;
+
+          if (dist === 0) {
+              // deselected the selected cow
+              setCursor(x, y, false);
+          } else if (dist === 1) {
+              // selected an adjacent cow
+              cow.board.swap(cursor.x, cursor.y,
+                  x, y, playBoardEvents);
+              setCursor(x, y, false);
+          } else {
+              // selected a different cow
+              setCursor(x, y, true);
+          }
       } else {
           setCursor(x, y, true);
       }
-    } else {
-      setCursor(x, y, true);
-    }
   }
 
   function playBoardEvents(events) {
+    console.log("in :: playBoardEvents");
       var display = cow.display;
       if (events.length > 0) {
           var boardEvent = events.shift(),
@@ -151,7 +120,7 @@ cow.screens["game-screen"] = (function() {
                   display.moveCows(boardEvent.data, next);
                   break;
               case "remove" :
-                  display.moveCows(boardEvent.data, next);
+                  display.removeCows(boardEvent.data, next);
                   break;
               case "refill" :
                   announce("No moves!");
@@ -170,6 +139,12 @@ cow.screens["game-screen"] = (function() {
               // good to go again
           });
       }
+  }
+
+  function gameOver() {
+      cow.display.gameOver(function() {
+          announce("Game over");
+      });
   }
 
   function addScore(points) {
@@ -197,6 +172,7 @@ cow.screens["game-screen"] = (function() {
   }
 
   function announce(str) {
+    console.log("in announce()");
       var dom = cow.dom,
           $ = dom.$,
           element = $("#game-screen .announcement")[0];
@@ -208,21 +184,37 @@ cow.screens["game-screen"] = (function() {
   }
 
   function moveCursor(x, y) {
-    if (paused) {
-        return;
-    }
-    var settings = cow.settings;
-    if(cursor.selected) {
-      x += cursor.x;
-      y += cursor.y;
-      if(x >= 0 && x < settings.cols && y >= 0 && y < settings.rows) {
-        selectCow(x, y);
+      if (paused) {
+          return;
       }
-    } else {
-      x = (cursor.x + x + settings.cols) % settings.cols;
-      y = (cursor.y + y + settings.rows) % settings.rows;
-      setCursor(x, y, false);
-    }
+      var settings = cow.settings;
+      if (cursor.selected) {
+          x += cursor.x;
+          y += cursor.y;
+          if (x >= 0 && x < settings.cols &&
+              y >= 0 && y < settings.rows) {
+              selectCow(x, y);
+          }
+      } else {
+          x = (cursor.x + x + settings.cols) % settings.cols;
+          y = (cursor.y + y + settings.rows) % settings.rows;
+          setCursor(x, y, false);
+      }
+      console.log("Cursor position: " + x + ", " + y);
+  }
+
+  function pauseGame() {
+    console.log("Game PAUSED");
+      if (paused) {
+          return; // do nothing if already paused
+      }
+      var dom = cow.dom,
+          overlay = dom.$("#game-screen .pause-overlay")[0];
+      overlay.style.display = "block";
+      paused = true;
+      pauseStart = Date.now();
+      clearTimeout(gameState.timer);
+      cow.display.pause();
   }
 
   function moveUp() {
@@ -241,12 +233,34 @@ cow.screens["game-screen"] = (function() {
     moveCursor(1, 0);
   }
 
+  function resumeGame() {
+    console.log("Game ON");
+      var dom = cow.dom,
+          overlay = dom.$("#game-screen .pause-overlay")[0];
+      overlay.style.display = "none";
+      paused = false;
+      var pauseTime = Date.now() - pauseStart;
+      gameState.startTime += pauseTime;
+      setLevelTimer();
+      cow.display.resume(pauseTime);
+  }
+
+  function exitGame() {
+    console.log("in :: exitGame()");
+    pauseGame();
+    var confirmed = window.confirm("Do you really wanna exit? Are you sure?");
+    if(confirmed) {
+      cow.showScreen("main-menu");
+    } else {
+      resumeGame();
+    }
+  }
+
   function setup() {
     var dom = cow.dom;
     dom.bind("footer button.exit", "click", exitGame);
     dom.bind("footer button.pause", "click", pauseGame);
     dom.bind(".pause-overlay", "click", resumeGame);
-    cow.input.initialize();
 
     var input = cow.input;
     input.initialize();
@@ -258,11 +272,11 @@ cow.screens["game-screen"] = (function() {
   }
 
   function run() {
-    if(firstRun) {
-      setup();
-      firstRun = false;
-    }
-    startGame();
+      if (firstRun) {
+          setup();
+          firstRun = false;
+      }
+      startGame();
   }
 
   return {

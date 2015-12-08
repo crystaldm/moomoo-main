@@ -8,41 +8,41 @@ cow.board = (function() {
       baseScore,
       numCowTypes;
 
-    function initialize(callback) {
-      console.log("in initialize");
+  function initialize(callback) {
       settings = cow.settings;
       numCowTypes = settings.numCowTypes;
       baseScore = settings.baseScore;
       cols = settings.cols;
       rows = settings.rows;
       fillBoard();
-
-      if(callback) {
-        callback();
+      if (callback) {
+          callback();
       }
-    }
+  }
 
-    function fillBoard() {
-        var x, y,
-            type;
-        cows = [];
-        for (x = 0; x < cols; x++) {
-            cows[x] = [];
-            for (y = 0; y < rows; y++) {
-                type = randomCow();
-                while ((type === getCow(x-1, y) &&
-                        type === getCow(x-2, y)) ||
-                       (type === getCow(x, y-1) &&
-                        type === getCow(x, y-2))) {
-                    type = randomCow();
-                }
-                cows[x][y] = type;
-            }
-        }
-        if (!hasMoves()) {
-            fillBoard();
-        }
-    }
+  function fillBoard() {
+      var x, y,
+          type;
+      cows = [];
+      for (x = 0; x < cols; x++) {
+          cows[x] = [];
+          for (y = 0; y < rows; y++) {
+              type = randomCow();
+              while ((type === getCow(x-1, y) &&
+                      type === getCow(x-2, y)) ||
+                     (type === getCow(x, y-1) &&
+                      type === getCow(x, y-2))) {
+                  type = randomCow();
+              }
+              cows[x][y] = type;
+          }
+      }
+      // try again if new board has no moves
+      if (!hasMoves()) {
+          fillBoard();
+      }
+  }
+
 
     function randomCow() {
       return Math.floor(Math.random() * numCowTypes);
@@ -80,9 +80,9 @@ cow.board = (function() {
   }
 
   function canSwap(x1, y1, x2, y2) {
-    var type1 = getCow(x1, y1);
-        type2 = getCow(x2, y2);
-    var chain;
+    var type1 = getCow(x1, y1),
+        type2 = getCow(x2, y2),
+        chain;
 
     if(!isAdjacent(x1, y1, x2, y2)) {
       return false;
@@ -92,7 +92,7 @@ cow.board = (function() {
     cows[x2][y2] = type1;
 
     chain = (checkChain(x2, y2) > 2 ||
-            checkChain(x1, y1) > 2);
+             checkChain(x1, y1) > 2);
 
     cows[x1][y1] = type1;
     cows[x2][y2] = type2;
@@ -101,22 +101,22 @@ cow.board = (function() {
   }
 
   function isAdjacent(x1, y1, x2, y2) {
-    var dx = Math.abs(x1 - x2),
-        dy = Math.abs(y1 - y2);
-    return (dx + dy === 1);
+      var dx = Math.abs(x1 - x2),
+          dy = Math.abs(y1 - y2);
+      return (dx + dy === 1);
   }
 
   function getChains() {
-    var x, y,
-        chains = [];
+      var x, y,
+          chains = [];
 
-    for(x = 0; x < cols; x++) {
-      chains[x] = [];
-      for(y = 0; y < rows; y++) {
-        chains[x][y] = checkChain(x,y);
+      for (x = 0; x < cols; x++) {
+          chains[x] = [];
+          for (y = 0; y < rows; y++) {
+              chains[x][y] = checkChain(x, y);
+          }
       }
-    }
-    return chains;
+      return chains;
   }
 
   function check(events) {
@@ -239,11 +239,11 @@ cow.board = (function() {
       return false;
   }
 
-  function canCowMove(x,y) {
-    return((x > 0 && canSwap(x, y, x-1, y)) ||
-           (x < cols-1 && canSwap(x, y, x+1, y)) ||
-           (y > 0 && canSwap(x, y, x, y-1)) ||
-           (y < rows-1 && canSwap(x, y, x, y+1)));
+  function canCowMove(x, y) {
+      return ((x > 0 && canSwap(x, y, x-1 , y)) ||
+              (x < cols-1 && canSwap(x, y, x+1 , y)) ||
+              (y > 0 && canSwap(x, y, x , y-1)) ||
+              (y < rows-1 && canSwap(x, y, x , y+1)));
   }
 
   function getBoard() {
@@ -256,10 +256,8 @@ cow.board = (function() {
   }
 
   function print() {
-    console.log("in :: cow.board.print()");
       var str = "";
       for (var y = 0; y < rows; y++) {
-        console.log("in print for loop");
           for (var x = 0; x < cols; x++) {
               str += getCow(x, y) + " ";
           }
@@ -276,4 +274,4 @@ cow.board = (function() {
       print : print
   };
 
-}) ();
+})();

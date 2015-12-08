@@ -26,9 +26,6 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
-<!-- main script -->
-<script src="js/cow.js"></script>
-
 <!-- app icons -->
 <media="screen and (max-device-width: 768px) and (orientation: portrait),
 			 screen and (max-device-width: 1024px) and (orientation: landscape)"/>
@@ -59,20 +56,24 @@ media="screen and (min-device-width: 768px)
 href="imgs/ios-startup-320x460.png"
 media="screen and (max-device-width:320px)"/>
 
+<!-- main script -->
+<script src="js/cow.js"></script>
+
 <script>
-	window.addEventListener("load", function() {
+window.addEventListener("load", function() {
 		cow.load("js/dom.js");
-		if (cow.isStandAlone()) {
-			cow.load("js/screen.splash.js", cow.setup);
-			cow.load("js/screen.game.js");
-			cow.load("js/display.canvas.js");
-			cow.load("js/screen.main-menu.js");
-			cow.load("js/board.js", cow.setup);
-			cow.load("js/input.js");
+		if (cow.isStandalone()) {
+				cow.load("js/screen.splash.js", cow.setup);
+				cow.load("js/screen.main-menu.js");
+				cow.load("js/board.js");
+				cow.load("js/screen.game.js");
+				cow.load("js/requestAnimationFrame.js");
+				cow.load("js/display.canvas.js");
+				cow.load("js/input.js");
 		} else {
-			cow.load("js/screen.install.js", cow.setup);
+				cow.load("js/screen.install.js", cow.setup);
 		}
-	});
+});
 </script>
 
 </head>
@@ -149,7 +150,7 @@ media="screen and (max-device-width:320px)"/>
 
 			</div>
 
-			<div class="time"><div class="indicator"></div></div>
+			<div class="time progress"><div class="indicator"></div></div>
 
 			<footer>
 

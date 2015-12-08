@@ -1,6 +1,7 @@
 // dom.js
 // dom helpers
 cow.dom = (function() {
+  
   function $(path, parent) {
     parent = parent || document;
     return parent.querySelectorAll(path);

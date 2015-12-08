@@ -1,30 +1,37 @@
 // game canvas module
 
 cow.display = (function() {
-  var animations = [];
-  var canvas, ctx, cols, rows, cows, cowSize, cowSprite, cursor, previousCycle, paused,
-  firstRun = true;
+  var canvas, ctx,
+      cols, rows,
+      cursor,
+      cowSize,
+      cows,
+      cowSprite,
+      previousCycle,
+      animations = [],
+      firstRun = true,
+      paused;
 
   function createBackground() {
-    var background = document.createElement("canvas"),
-        bgctx = background.getContext("2d");
+      var background = document.createElement("canvas"),
+          bgctx = background.getContext("2d");
 
-    cow.dom.addClass(background, "background");
-    background.width = cols * cowSize;
-    background.height = rows * cowSize;
+      cow.dom.addClass(background, "background");
+      background.width = cols * cowSize;
+      background.height = rows * cowSize;
 
-    bgctx.fillStyle = "rgba(225, 235, 255, 0.15)";
-    for(var x = 0; x < cols; x++) {
-      for(var y = 0; y < cols; y++) {
-        if((x+y) % 2) {
-          bgctx.fillRect (
-            x * cowSize, y * cowSize,
-            cowSize, cowSize
-          );
-        }
+      bgctx.fillStyle = "rgba(225,235,255,0.15)";
+      for (var x=0;x<cols;x++) {
+          for (var y=0;y<cols;y++) {
+              if ((x+y) % 2) {
+                  bgctx.fillRect(
+                      x * cowSize, y * cowSize,
+                      cowSize, cowSize
+                  );
+              }
+          }
       }
-    }
-    return background;
+      return background;
   }
 
   function setup() {
@@ -45,6 +52,7 @@ cow.display = (function() {
 
     boardElement.appendChild(createBackground());
     boardElement.appendChild(canvas);
+
     previousCycle = Date.now();
     requestAnimationFrame(cycle);
   }
@@ -62,15 +70,18 @@ cow.display = (function() {
   }
 
   function initialize(callback) {
-    paused = false;
-    if(firstRun) {
-      setup();
-      cowSprite = new Image();
-      cowSprite.addEventListener("load", callback, false);
-      cowSprite.src = "imgs/cows" + cowSize + ".png";
-      firstRun = false;
-    }
-    callback();
+      paused = false;
+      if (firstRun) {
+          setup();
+          cowSprite = new Image();
+          cowSprite.addEventListener(
+              "load", callback, false);
+          cowSprite.src =
+              "imgs/cows" + cowSize + ".png";
+          firstRun = false;
+      } else {
+          callback();
+      }
   }
 
   function drawCow(type, x, y, scale, rot) {
@@ -93,45 +104,44 @@ cow.display = (function() {
   }
 
   function redraw(newCows, callback) {
-    var x, y;
-    cows = newCows;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for(x = 0; x < cols; x++) {
-      for(y = 0; y < rows; y++) {
-        drawCow(cows[x][y], x, y);
+      var x, y;
+      cows = newCows;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for (x = 0; x < cols; x++) {
+          for (y = 0; y < rows; y++) {
+              drawCow(cows[x][y], x, y);
+          }
       }
-    }
-    callback();
-    renderCursor();
+      callback();
   }
 
   function renderCursor(time) {
-    if(!cursor) {
-      return;
-    }
-    var x = cursor.x,
-        y = cursor.y;
-        t1 = (Math.sin(time / 200) + 1) / 2,
-        t2 = (Math.sin(time / 400) + 1) / 2;
+      if (!cursor) {
+          return;
+      }
+      var x = cursor.x,
+          y = cursor.y,
+          t1 = (Math.sin(time / 200) + 1) / 2,
+          t2 = (Math.sin(time / 400) + 1) / 2;
 
-    clearCursor();
+      clearCursor();
 
-    if(cursor.selected) {
+      if (cursor.selected) {
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.globalAlpha = 0.8 * t1;
+          drawCow(cows[x][y], x, y);
+          ctx.restore();
+      }
       ctx.save();
-      ctx.globalCompositeOperation = "lighter",
-      ctx.globalAlpha = 0.8 * t1;
-      drawCow(cows[x][y], x, y);
+      ctx.lineWidth = 0.05 * cowSize;
+      ctx.strokeStyle =
+          "rgba(250,250,150," + (0.5 + 0.5 * t2) + ")";
+      ctx.strokeRect(
+          (x + 0.05) * cowSize, (y + 0.05) * cowSize,
+          0.9 * cowSize, 0.9 * cowSize
+      );
       ctx.restore();
-    }
-    ctx.save();
-    ctx.lineWidth = 0.05 * cowSize;
-    ctx.strokeStyle =
-        "rgba(250,250,150," + (0.5 + 0.5 * t2) + ")";
-    ctx.strokeRect(
-        (x + 0.05) * cowSize, (y + 0.05) * cowSize,
-        0.9 * cowSize, 0.9 * cowSize
-    );
-    ctx.restore();
   }
 
   function addAnimation(runTime, fncs) {
@@ -257,7 +267,6 @@ cow.display = (function() {
   }
 
   function levelUp(callback) {
-      console.log("in :: levelUp()");
       addAnimation(1000, {
           before : function(pos) {
               var j = Math.floor(pos * rows * 2),
@@ -285,78 +294,6 @@ cow.display = (function() {
       });
   }
 
-  function gameOver(callback) {
-      addAnimation(1000, {
-          render : function(pos) {
-              canvas.style.left =
-                  0.2 * pos * (Math.random() - 0.5) + "em";
-              canvas.style.top =
-                  0.2 * pos * (Math.random() - 0.5) + "em";
-          },
-          done : function() {
-              canvas.style.left = "0";
-              canvas.style.top = "0";
-              explode(callback);
-          }
-      });
-  }
-
-  function explode(callback) {
-    var pieces = [],
-        piece,
-        x, y;
-    for(x = 0; x < cols; x++) {
-      for(y = 0; y < rows; y++) {
-        piece = {
-          type : cows[x][y],
-          pos : {
-            x : x + 0.5,
-            y : y + 0.5
-          },
-          rot : (Math.random() - 0.5) * 3
-        }
-        pieces.push(piece);
-      }
-    }
-    addAnimation(2000, {
-      before : function(pos) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      },
-      render : function(pos) {
-        explodePieces(pieces, pos, delta);
-      },
-      done : callback
-    });
-  }
-
-  function explodePieces(pieces, pos, delta) {
-      var piece, i;
-      for (i=0;i<pieces.length;i++) {
-          piece = pieces[i];
-
-          piece.vel.y += 50 * delta;
-          piece.pos.y += piece.vel.y * delta;
-          piece.pos.x += piece.vel.x * delta;
-
-          if (piece.pos.x < 0 || piece.pos.x > cols) {
-              piece.pos.x = Math.max(0, piece.pos.x);
-              piece.pos.x = Math.min(cols, piece.pos.x);
-              piece.vel.x *= -1;
-          }
-
-          ctx.save();
-          ctx.globalCompositeOperation = "lighter";
-          ctx.translate(piece.pos.x * cowSizeSize, piece.pos.y * cowSizeSize);
-          ctx.rotate(piece.rot * pos * Math.PI * 4);
-          ctx.translate(-piece.pos.x * cowSizeSize, -piece.pos.y * cowSizeSize);
-          drawCow(piece.type,
-              piece.pos.x - 0.5,
-              piece.pos.y - 0.5
-          );
-          ctx.restore();
-      }
-  }
-
   function clearCursor() {
     if(cursor) {
       var x = cursor.x,
@@ -377,13 +314,89 @@ cow.display = (function() {
       } else {
           cursor = null;
       }
-      renderCursor();
   }
 
   function clearCow(x, y) {
-    ctx.clearRect(
-      x * cowSize, y * cowSize, cowSize, cowSize
-    );
+      ctx.clearRect(
+          x * cowSize, y * cowSize, cowSize, cowSize
+      );
+  }
+
+  function gameOver(callback) {
+      addAnimation(1000, {
+          render : function(pos) {
+              canvas.style.left =
+                  0.2 * pos * (Math.random() - 0.5) + "em";
+              canvas.style.top =
+                  0.2 * pos * (Math.random() - 0.5) + "em";
+          },
+          done : function() {
+              canvas.style.left = "0";
+              canvas.style.top = "0";
+              explode(callback);
+          }
+      });
+  }
+
+  function explode(callback) {
+      var pieces = [],
+          piece,
+          x, y;
+      for (x=0;x<cols;x++) {
+          for (y=0;y<rows;y++) {
+              piece = {
+                  type : cows[x][y],
+                  pos : {
+                      x : x + 0.5,
+                      y : y + 0.5
+                  },
+                  vel : {
+                      x : (Math.random() - 0.5) * 20,
+                      y : -Math.random() * 10
+                  },
+                  rot : (Math.random() - 0.5) * 3
+              }
+              pieces.push(piece);
+          }
+      }
+
+      addAnimation(2000, {
+          before : function(pos) {
+              ctx.clearRect(0,0,canvas.width,canvas.height);
+          },
+          render : function(pos, delta) {
+              explodePieces(pieces, pos, delta);
+          },
+          done : callback
+      });
+  }
+
+  function explodePieces(pieces, pos, delta) {
+      var piece, i;
+      for (i=0;i<pieces.length;i++) {
+          piece = pieces[i];
+
+          piece.vel.y += 50 * delta;
+          piece.pos.y += piece.vel.y * delta;
+          piece.pos.x += piece.vel.x * delta;
+
+          if (piece.pos.x < 0 || piece.pos.x > cols) {
+              piece.pos.x = Math.max(0, piece.pos.x);
+              piece.pos.x = Math.min(cols, piece.pos.x);
+              piece.vel.x *= -1;
+          }
+
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          ctx.translate(piece.pos.x * cowSize, piece.pos.y * cowSize);
+          ctx.rotate(piece.rot * pos * Math.PI * 4);
+          ctx.translate(-piece.pos.x * cowSize, -piece.pos.y * cowSize);
+          drawCow(piece.type,
+              piece.pos.x - 0.5,
+              piece.pos.y - 0.5
+          );
+          ctx.restore();
+      }
   }
 
   function pause() {
@@ -410,4 +423,4 @@ cow.display = (function() {
     resume : resume
   };
 
-}) ();
+})();

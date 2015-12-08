@@ -2,32 +2,31 @@
 
 var cow = (function() {
   var settings = {
-    rows : 8,
-    cols : 8,
-    baseScore : 100,
-    baseLevelTimer: 60000,
-    baseLevelScore: 1500,
-    baseLevelExp: 1.05,
-    numCowTypes : 7,
-
-    controls: {
-      // keyboard
-      KEY_UP : "moveUp",
-      KEY_LEFT : "moveLeft",
-      KEY_DOWN : "moveDown",
-      KEY_RIGHT : "moveRight",
-      KEY_ENTER : "selectCow",
-      KEY_SPACE : "selectCow",
-      // mouse and touch
-      CLICK : "selectCow",
-      TOUCH : "selectCow",
-      // gamepad
-      BUTTON_A : "selectCow",
-      LEFT_STICK_UP : "moveUp",
-      LEFT_STICK_DOWN : "moveDown",
-      LEFT_STICK_LEFT : "moveLeft",
-      LEFT_STICK_RIGHT : "moveRight"
-    },
+      rows : 8,
+      cols : 8,
+      baseScore : 100,
+      baseLevelScore : 1500,
+      baseLevelExp : 1.05,
+      baseLevelTimer : 60000,
+      numCowTypes : 7,
+      controls : {
+          // keyboard
+          KEY_UP : "moveUp",
+          KEY_LEFT : "moveLeft",
+          KEY_DOWN : "moveDown",
+          KEY_RIGHT : "moveRight",
+          KEY_ENTER : "selectCow",
+          KEY_SPACE : "selectCow",
+          // mouse and touch
+          CLICK : "selectCow",
+          TOUCH : "selectCow",
+          // gamepad
+          BUTTON_A: "selectCow",
+          LEFT_STICK_UP: "moveUp",
+          LEFT_STICK_DOWN: "moveDown",
+          LEFT_STICK_LEFT: "moveLeft",
+          LEFT_STICK_RIGHT: "moveRight"
+      }
   };
 
   var scriptQueue = [],
@@ -36,67 +35,58 @@ var cow = (function() {
       executeRunning = false;
 
   function executeScriptQueue() {
-    console.log("in :: cow.executeScriptQueue()");
-    var next = scriptQueue[0],
-        first, script;
-    if(next && next.loaded) {
-      executeRunning = true;
-      scriptQueue.shift();
-      first = document.getElementsByTagName("script")[0];
-      script = document.createElement("script");
-      script.onload = function() {
-        if(next.callback) {
-          next.callback();
-        }
-        executeScriptQueue();
-      };
-      script.src = next.src;
-      first.parentNode.insertBefore(script, first);
-    } else {
-      executeRunning = false;
-    }
+      var next = scriptQueue[0],
+          first, script;
+      if (next && next.loaded) {
+          executeRunning = true;
+          // remove the first element in the queue
+          scriptQueue.shift();
+          first = document.getElementsByTagName("script")[0];
+          script = document.createElement("script");
+          script.onload = function() {
+              if (next.callback) {
+                  next.callback();
+              }
+              // try to execute more scripts
+              executeScriptQueue();
+          };
+          script.src = next.src;
+          first.parentNode.insertBefore(script, first);
+      } else {
+          executeRunning = false;
+      }
+  }
+
+  function getLoadProgress() {
+    return numResourcesLoaded / numResources;
   }
 
   function load(src, callback) {
-    var image, queueEntry;
-    numResources++;
+      var image, queueEntry;
+      numResources++;
 
-    queueEntry = {
-      src: src,
-      callback: callback,
-      loaded: false
-    };
-    scriptQueue.push(queueEntry);
+      // add this resource to the execution queue
+      queueEntry = {
+          src: src,
+          callback: callback,
+          loaded: false
+      };
+      scriptQueue.push(queueEntry);
 
-    image = new Image();
-    image.onload = image.onerror = function() {
-      numResourcesLoaded++;
-      queueEntry.loaded = true;
-      if(!executeRunning) {
-        executeScriptQueue();
-      }
-    };
-    image.src = src;
+      image = new Image();
+      image.onload = image.onerror = function() {
+          numResourcesLoaded++;
+          queueEntry.loaded = true;
+          if (!executeRunning) {
+              executeScriptQueue();
+          }
+      };
+      image.src = src;
   }
 
-  function setup() {
-    console.log("in :: cow.setup()");
-    cow.dom.bind(document, "touchmove", function(event) {
-      event.preventDefault();
-    });
-
-    if(/Android/.test(navigator.userAgent)) {
-      $("html")[0].style.height = "200%";
-      setTimeout(function() {
-        window.scrollTo(0,1);
-      }, 0);
-    }
-
-    if(isStandAlone()) {
-      showScreen("splash-screen");
-    } else {
-      showScreen("install-screen");
-    }
+  function preload(src) {
+      var image = new Image();
+      image.src = src;
   }
 
   function showScreen(screenId) {
@@ -115,22 +105,43 @@ var cow = (function() {
     cow.screens[screenId].run();
   }
 
-  function isStandAlone() {
+  function isStandalone() {
     return (window.navigator.standalone !== false);
   }
 
-  function getLoadProgress() {
-    return numResourcesLoaded / numResources;
+  function setup() {
+      // hide the address bar on Android devices
+      if (/Android/.test(navigator.userAgent)) {
+          cow.dom.$("html")[0].style.height = "200%";
+          setTimeout(function() {
+              window.scrollTo(0, 1);
+          }, 0);
+      }
+
+      // disable native touchmove behavior to
+      // prevent overscroll
+      cow.dom.bind(document, "touchmove", function(event) {
+          event.preventDefault();
+      });
+
+      if (isStandalone()) {
+          showScreen("splash-screen");
+      } else {
+          showScreen("install-screen");
+      }
+
   }
 
+
   return {
-    load : load,
-    setup : setup,
+    getLoadProgress: getLoadProgress,
+    isStandalone: isStandalone,
+    preload: preload,
+    load: load,
+    setup: setup,
     showScreen : showScreen,
-    screens : {},
-    isStandAlone : isStandAlone,
-    settings : settings,
-    getLoadProgress : getLoadProgress
+    settings: settings,
+    screens: {}
   }
 
 }) ();
