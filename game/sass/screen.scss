@@ -148,6 +148,10 @@ body {
 		z-index: 20;
 		@include opacity(0);
 		cursor: default;
+
+		&.zoomfade {
+			@include animation(zoomfade 2s ease-in);
+		}
 	}
 
 	.game-info {
@@ -284,9 +288,4 @@ ul {
 			background-color: $red-color;
 		}
 	}
-}
-
-// zoomfade animation
-.zoomfade {
-	@include animation(zoomfade 2s fade-in);
 }

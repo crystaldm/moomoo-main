@@ -20,6 +20,7 @@ cow.screens["game-screen"] = (function() {
           endTime : 0 // time to game over
       };
       updateGameInfo();
+      cow.audio.initialize();
       board.initialize(function() {
           display.initialize(function() {
               cursor = {
@@ -35,6 +36,19 @@ cow.screens["game-screen"] = (function() {
       paused = false;
       var overlay = cow.dom.$("#game-screen .pause-overlay")[0];
       overlay.style.display = "none";
+  }
+
+  function resetGame() {
+    var board = cow.board,
+        display = cow.display;
+    gameState = {
+        level : 0,
+        score : 0,
+        timer : 0, // setTimeout reference
+        startTime : 0, // time at start of level
+        endTime : 0 // time to game over
+    };
+    updateGameInfo();
   }
 
   function updateGameInfo() {
@@ -120,6 +134,7 @@ cow.screens["game-screen"] = (function() {
                   display.moveCows(boardEvent.data, next);
                   break;
               case "remove" :
+                  cow.audio.play("match");
                   display.removeCows(boardEvent.data, next);
                   break;
               case "refill" :
@@ -128,6 +143,10 @@ cow.screens["game-screen"] = (function() {
                   break;
               case "score" : // new score event
                   addScore(boardEvent.data);
+                  next();
+                  break;
+              case "badswap" :
+                  cow.audio.play("badswap");
                   next();
                   break;
               default :
@@ -142,6 +161,7 @@ cow.screens["game-screen"] = (function() {
   }
 
   function gameOver() {
+      cow.audio.play("gameover");
       cow.display.gameOver(function() {
           announce("Game over");
       });
@@ -161,6 +181,7 @@ cow.screens["game-screen"] = (function() {
   }
 
   function advanceLevel() {
+      cow.audio.play("levelup");
       gameState.level++;
       announce("Level " + gameState.level);
       updateGameInfo();
@@ -172,7 +193,6 @@ cow.screens["game-screen"] = (function() {
   }
 
   function announce(str) {
-    console.log("in announce()");
       var dom = cow.dom,
           $ = dom.$,
           element = $("#game-screen .announcement")[0];
