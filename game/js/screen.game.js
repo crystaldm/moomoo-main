@@ -165,6 +165,10 @@ cow.screens["game-screen"] = (function() {
       cow.display.gameOver(function() {
           announce("Game over");
       });
+      //TODO: starthere
+      // setTimeout(function() {
+      //   startGame();
+      // }, 2000)
   }
 
   function addScore(points) {
